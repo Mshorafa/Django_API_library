@@ -26,10 +26,10 @@ class Author(models.Model):
 
     class Meta:
         """Meta definition for Author."""
-        ordering = ['last_name', 'first_name']
+
         verbose_name = 'Author'
         verbose_name_plural = 'Authors'
 
     def __str__(self):
         """Unicode representation of Author."""
-        return f'{self.last_name} , {self.first_name}'
+        pass
