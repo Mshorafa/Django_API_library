@@ -51,7 +51,8 @@ class DeletePost(generics.RetrieveDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
-        post = models.Posts.objects.filter(pk=self.kwargs['pk'], poster=self.request.user)
+        post = models.Posts.objects.filter(
+            pk=self.kwargs['pk'], poster=self.request.user)
         if post.exists():
             return self.destroy(request, *args, **kwargs)
         else:
