@@ -14,33 +14,44 @@ from . import serializers
 
 @csrf_exempt
 def SingUp(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
             data = JSONParser().parse(request)
             user = User.objects.create_user(
-                username=data['username'], password=data['password1'])
+                username=data["username"], password=data["password1"]
+            )
             user.save()
             token = Token.objects.create(user=user)
-            return JsonResponse({'token': str(token)}, status=201)
+            return JsonResponse({"token": str(token)}, status=201)
         except IntegrityError:
-            return JsonResponse({'error': 'That username has already been taken. Please choose a new username'},
-                                status=400)
+            return JsonResponse(
+                {
+                    "error": "That username has already been taken. Please choose a new username"
+                },
+                status=400,
+            )
 
 
 @csrf_exempt
 def lgoin(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         data = JSONParser().parse(request)
-        user = authenticate(request, username=data['username'], password=data['password'])
+        user = authenticate(
+            request, username=data["username"], password=data["password"]
+        )
         if user is None:
-            return JsonResponse({'error': 'could not login Please check the user name and the password'},
-                                status=400)
+            return JsonResponse(
+                {
+                    "error": "could not login Please check the user name and the password"
+                },
+                status=400,
+            )
         else:
             try:
                 token = Token.objects.get(user=user)
             except:
                 token = Token.objects.create(user=user)
-            return JsonResponse({'token': str(token)}, status=201)
+            return JsonResponse({"token": str(token)}, status=201)
 
 
 class TodoCompletedList(generics.ListAPIView):
@@ -50,7 +61,8 @@ class TodoCompletedList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         todo = models.Todo.objects.filter(
-            user=user, datecompleted__isnull=False).order_by('-datecompleted')
+            user=user, datecompleted__isnull=False
+        ).order_by("-datecompleted")
         return todo
 
 
@@ -60,8 +72,7 @@ class TodoCreateList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        todo = models.Todo.objects.filter(
-            user=user, datecompleted__isnull=True)
+        todo = models.Todo.objects.filter(user=user, datecompleted__isnull=True)
         return todo
 
     def perform_create(self, serializer):
