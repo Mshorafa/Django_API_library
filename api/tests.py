@@ -7,7 +7,7 @@ from unittest import TestCase
 
 
 def tow_sum(a, b):
-    return a + b
+    return 0
 
 
 class TestSum(TestCase):
