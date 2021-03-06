@@ -36,7 +36,7 @@ class TestViews(TestCase):
 
         json_res = res_post.json()
 
-        self.assertEqual(str(payload["amount"]), json_res["amount"])
+        self.assertEqual(payload["amount"], json_res["amount"])
         self.assertEqual(payload["merchent"], json_res["merchent"])
         self.assertEqual(payload["decreption"], json_res["decreption"])
         self.assertEqual(payload["categroy"], json_res["categroy"])
@@ -49,3 +49,16 @@ class TestViews(TestCase):
         self.assertIsInstance(json_res, list)
         expenses = Expense.objects.all()
         self.assertEqual(len(expenses), len(json_res))
+
+    def test_expenses_create_required_fileds_missing(self):
+        payload = {
+            "merchent": "AT&T",
+            "decreption": "cell phone subscription",
+            "categroy": "utilities",
+        }
+        res_post = self.client.post(
+            reverse("api:expenses-list-create"), payload, format="json"
+        )
+        self.assertEqual(400, res_post.status_code)
+
+        json_res = res_post.json()
