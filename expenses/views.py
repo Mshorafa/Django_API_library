@@ -7,6 +7,7 @@ from . import models, serializers
 class ExpensesCreateView(ListCreateAPIView):
     serializer_class = serializers.ExpenseSserializer
     queryset = models.Expense.objects.all()
+    filterset_fields = ["categroy", "merchent"]
 
 
 class ExpensesRetrieveAndDelete(RetrieveDestroyAPIView):

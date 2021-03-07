@@ -25,7 +25,7 @@ urlpatterns = [
     path("lgoin/", todo_view.lgoin, name="lgoin"),
     # Expanses_App
     path(
-        "expenses/",
+        "expenses",
         expenses_view.ExpensesCreateView.as_view(),
         name="expenses-list-create",
     ),
