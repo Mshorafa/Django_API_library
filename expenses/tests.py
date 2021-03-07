@@ -1,6 +1,7 @@
 from django.test import TestCase
-from .models import Expense
 from django.urls import reverse
+from django.contrib.auth.models import User
+from .models import Expense
 
 
 # Create your tests here.
@@ -21,6 +22,12 @@ class TestModel(TestCase):
 
 
 class TestViews(TestCase):
+    def setUp(self):
+        User.objects.create_user(
+            username="test1234", email="testuser@gmail.com", password="test1234"
+        )
+        self.client.login(username="test1234", password="test1234")
+
     def test_expenses_create(self):
         payload = {
             "amount": 50,
