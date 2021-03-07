@@ -15,7 +15,6 @@ import sys
 import dotenv
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "expenses.apps.ExpensesConfig",
     "django_filters",
+    "rest_framework_api_key",
 ]
 
 REST_FRAMEWORK = {
@@ -55,6 +55,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework_api_key.permissions.HasAPIKey"],
 }
 
 MIDDLEWARE = [
