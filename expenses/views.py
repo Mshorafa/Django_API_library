@@ -1,24 +1,14 @@
-from django.shortcuts import render
-from django.forms.models import model_to_dict
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
+from rest_framework.generics import RetrieveDestroyAPIView, ListCreateAPIView
 from . import models, serializers
-
 
 # Create your views here.
 
 
-class ExpensesCreateView(APIView):
-    def get(self, request):
-        expenses = models.Expense.objects.all()
-        serializer = serializers.ExpenseSserializer(expenses, many=True)
-        return Response(serializer.data, status=200)
+class ExpensesCreateView(ListCreateAPIView):
+    serializer_class = serializers.ExpenseSserializer
+    queryset = models.Expense.objects.all()
 
-    def post(self, request):
-        serializer = serializers.ExpenseSserializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(serializer.data, status=201)
+class ExpensesRetrieveAndDelete(RetrieveDestroyAPIView):
+    serializer_class = serializers.ExpenseSserializer
+    queryset = models.Expense.objects.all()

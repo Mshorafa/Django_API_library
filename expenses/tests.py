@@ -62,3 +62,32 @@ class TestViews(TestCase):
         self.assertEqual(400, res_post.status_code)
 
         json_res = res_post.json()
+
+    def test_Expenses_Retrieve(self):
+        expense = Expense.objects.create(
+            amount=5000, decreption="lone", merchent="Hamid", categroy="Transfer"
+        )
+
+        res = self.client.get(
+            reverse("api:Expenses-Retrieve-AndDelete", args=[expense.id]),
+            formart="json",
+        )
+        self.assertEqual(res.status_code, 200)
+        json_res = res.json()
+
+        self.assertEqual(expense.id, json_res["id"])
+        self.assertEqual(expense.amount, json_res["amount"])
+        self.assertEqual(expense.decreption, json_res["decreption"])
+        self.assertEqual(expense.merchent, json_res["merchent"])
+        self.assertEqual(expense.categroy, json_res["categroy"])
+
+    def test_Expenses_Delete(self):
+        expense = Expense.objects.create(
+            amount=4000, decreption="lone", merchent="Jon", categroy="Transfer"
+        )
+        res = self.client.delete(
+            reverse("api:Expenses-Retrieve-AndDelete", args=[expense.id]),
+            formart="json",
+        )
+        self.assertEqual(res.status_code, 204)
+        self.assertFalse(Expense.objects.filter(pk=expense.id).exists())

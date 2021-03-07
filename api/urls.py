@@ -29,4 +29,9 @@ urlpatterns = [
         expenses_view.ExpensesCreateView.as_view(),
         name="expenses-list-create",
     ),
+    path(
+        "expensesretrieveanddelete/<int:pk>",
+        expenses_view.ExpensesRetrieveAndDelete.as_view(),
+        name="Expenses-Retrieve-AndDelete",
+    ),
 ]
